@@ -13,3 +13,12 @@ export class Link {
     target!: number;
     type!: string;
 }
+
+export interface Project {
+    id: string;
+    key: string;
+    name: string;
+}
+export interface Sprint{
+    name: string;
+}
