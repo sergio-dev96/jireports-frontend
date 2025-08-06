@@ -1,0 +1,81 @@
+@for (project of retrasados; track $index) {
+<div class="card">
+    <h5>{{ project.project }}</h5>
+    <p-table [value]="project.issues" [scrollable]="true" scrollHeight="600px" [tableStyle]="{'min-width': '60rem'}"
+        [expandedRowKeys]="expandedRows" (onRowExpand)="onRowExpand($event)" (onRowCollapse)="onRowCollapse($event)"
+        dataKey="key">
+
+        <ng-template #header>
+            <tr>
+                <th style="width: 5rem"></th>
+                <th>Key</th>
+                <th>Descripción</th>
+                <th>Persona asignada</th>
+                <th>Puntos</th>
+                <th>H. consumidas</th>
+                <th>H. consumidas (%)</th>
+                <!-- <th>H. atrasados</th> -->
+            </tr>
+        </ng-template>
+
+
+        <ng-template #body let-issue let-rowIndex="rowIndex" let-expanded="expanded">
+            <tr>
+                <td>
+                    @if(issue.impediments && issue.impediments.length > 0) {
+                    <p-button type="button" pRipple [pRowToggler]="issue" [text]="true" [rounded]="true" [plain]="true"
+                        [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'" />
+                    }
+                </td>
+                <td>
+                    <div class="flex items-center">
+                        <img [alt]="issue.key" [src]="issue.icon" width="15" style="vertical-align: middle" />
+                        <span class="font-italic">{{ issue.key }}</span>
+                    </div>
+                </td>
+                <td>
+                    {{issue.summary}}
+                </td>
+                <td>
+                    {{issue.assignee}}
+                </td>
+                <td>
+                    {{issue.story_points}}
+                </td>
+                <td>
+                    {{issue.net_labor_hours}}
+                </td>
+                <td>
+                    {{issue.percent}} %
+                </td>
+                <!-- <td>
+                        {{issue.overdue_days}}
+                    </td> -->
+            </tr>
+        </ng-template>
+        <ng-template #expandedrow let-issue>
+            <tr class="bg-emphasis">
+                <td colspan="7">
+                    <div class="p-4 ml-5">
+                        <h6>Impedimentos para {{ issue.key }} - {{ issue.summary}}</h6>
+                        <p-table [value]="issue.impediments" dataKey="key" #impedimentTable>
+                            <ng-template #header>
+            <tr>
+                <th>Key</th>
+                <th>Descripcion</th>
+            </tr>
+        </ng-template>
+        <ng-template #body let-impediment [ngStyle]="rowStyle(issue)">
+            <tr>
+                <td>{{ impediment.key }}</td>
+                <td>{{ impediment.summary }}</td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>
+</td>
+</tr>
+</ng-template>
+</p-table>
+</div>
+}
