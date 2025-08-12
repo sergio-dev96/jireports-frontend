@@ -5,3 +5,28 @@
 @use './assets/demo/demo.scss';
 
 @import 'dhtmlx-gantt/codebase/dhtmlxgantt.css';
+
+
+.gantt-chart {
+    position: relative;
+    width: 100%;
+    height: 600px;
+}
+
+
+.gantt_task_line.done {
+    --dhx-gantt-task-background: #00a816;
+    --dhx-gantt-task-color: #fff;
+}
+
+
+.gantt_task_line.ready {
+    --dhx-gantt-task-background: #3054f5;
+    --dhx-gantt-task-color: #fff;
+}
+
+
+.gantt_task_line.blocked {
+    --dhx-gantt-task-background: #c90303;
+    --dhx-gantt-task-color: #fff;
+}

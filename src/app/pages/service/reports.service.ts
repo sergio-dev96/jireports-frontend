@@ -2,6 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
+import { NewTask } from 'dhtmlx-gantt';
 
 @Injectable({
   providedIn: 'root'
@@ -15,9 +16,9 @@ export class ReportsService {
     return this.http.get<any>(`${environment.apiUrl}/jira/delay-tasks`);
   }
 
-  getGanttProgress(projects:string,sprints : string): Observable<any> {
+  getGanttProgress(projects: string, sprints: string): Observable<NewTask[]> {
     return this.http.get<any>(`${environment.apiUrl}/jira/gantt-progress`,
-      {params: {projects, sprints}});
+      { params: { projects, sprints } });
   }
 
   getProjects(): Observable<any> {

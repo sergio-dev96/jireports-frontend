@@ -1,19 +1,13 @@
 <form [formGroup]="ganttForm" class="card flex flex-col gap-4 mb-0" (submit)="getIssues()">
     <div class="font-semibold text-xl">Búsqueda de Issues</div>
     <p-iftalabel class="flex flex-col gap-2">
-        <p-multiselect inputId="ms_projects" [options]="projects" formControlName="selectedProjects" 
-            optionLabel="name" placeholder="Seleccione los proyectos" 
-            [maxSelectedLabels]="5" styleClass="w-100" 
-            display="chip"
-            />
+        <p-multiselect inputId="ms_projects" [options]="projects" formControlName="selectedProjects" optionLabel="name"
+            placeholder="Seleccione los proyectos" [maxSelectedLabels]="5" styleClass="w-100" display="chip" />
         <label for="ms_projects">Proyectos</label>
     </p-iftalabel>
     <p-iftalabel class="flex flex-col gap-2">
-        <p-multiselect inputId="ms_sprints" [options]="sprints" formControlName="selectedSprints" 
-            optionLabel="name" placeholder="Seleccione los sprints" 
-            [maxSelectedLabels]="5" styleClass="w-100" 
-            display="chip"
-            />
+        <p-multiselect inputId="ms_sprints" [options]="sprints" formControlName="selectedSprints" optionLabel="name"
+            placeholder="Seleccione los sprints" [maxSelectedLabels]="5" styleClass="w-100" display="chip" />
         <label for="ms_sprints">Sprints</label>
     </p-iftalabel>
     <div class="flex flex-col gap-2">
