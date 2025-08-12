@@ -6,7 +6,9 @@
 
 @import 'dhtmlx-gantt/codebase/dhtmlxgantt.css';
 
-
+:root {
+    --dhx-gantt-task-progress-color: rgb(0 0 0 / 30%);
+}
 .gantt-chart {
     position: relative;
     width: 100%;
@@ -15,18 +17,22 @@
 
 
 .gantt_task_line.done {
-    --dhx-gantt-task-background: #00a816;
+    --dhx-gantt-task-background: #0bb40b;
     --dhx-gantt-task-color: #fff;
 }
 
 
 .gantt_task_line.ready {
-    --dhx-gantt-task-background: #3054f5;
+    --dhx-gantt-task-background: #105edb;
     --dhx-gantt-task-color: #fff;
 }
 
-
 .gantt_task_line.blocked {
-    --dhx-gantt-task-background: #c90303;
+    --dhx-gantt-task-background: #be8e3a;
+    --dhx-gantt-task-color: #000000;
+}
+
+.gantt_task_line.out-of-time {
+    --dhx-gantt-task-background: #be3a3a;
     --dhx-gantt-task-color: #fff;
 }

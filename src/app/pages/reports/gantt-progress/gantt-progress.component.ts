@@ -55,9 +55,14 @@ export class GanttProgressComponent implements OnInit {
     });
     let dateToString = gantt.date.date_to_str('%d/%m/%Y');
 
+    gantt.templates.task_end_date = function(date) {
+      return dateToString(new Date(date.valueOf() - 1));
+    };
+
     gantt.templates.format_date = (date: Date) => {
       return dateToString(date);
     };
+
     gantt.templates.tooltip_date_format = (date: Date) => {
       return dateToString(date);
     };
@@ -65,7 +70,10 @@ export class GanttProgressComponent implements OnInit {
     gantt.templates.task_class = (start: Date, end: Date, task: Task) => {
 
       let estado = task["with_impediment"] ? "Impedimento" : task["issue_status"];
+      estado = task["is_overdue"] ? "Fuera de fecha" : estado;
       switch (estado) {
+        case "Fuera de fecha":
+          return "out-of-time";
         case "Finalizado":
         case "Desestimado":
           return "done";
@@ -82,27 +90,23 @@ export class GanttProgressComponent implements OnInit {
 
     gantt.templates.tooltip_text = (start: Date, end: Date, task: Task) => {
       if (task.type === "project") {
-        return `<div>Actividad: ${task.text}</div>
-        `;
+        return `<div>Actividad: ${task.text}</div>`;
       }
       else if (task["issue_parent_key"]) {
         return `<div>Actividad: ${task.text}</div>
         <div>Inicio: ${gantt.templates.tooltip_date_format(start)}</div>
-        <div>Fin: ${gantt.templates.tooltip_date_format(end)}</div>
+        <div>Fin: ${gantt.templates.tooltip_date_format(new Date(end.valueOf() - 1))}</div>
         <div>Progreso: ${(task.progress! * 100).toFixed(2)} % </div>
         <div>Estado: ${task["issue_status"]}</div>
         <div>Funcionalidad: ${task["issue_parent_key"]} | ${task["issue_parent_name"]}</div>
-        <div>Tiene impedimento: ${task["with_impediment"] ? "Si" : "No"}</div>
-        `;
+        <div>Tiene impedimento: ${task["with_impediment"] ? "Si" : "No"}</div>`;
       }
       else {
         return `<div>Actividad: ${task.text}</div>
         <div>Inicio: ${gantt.templates.tooltip_date_format(start)}</div>
-        <div>Fin: ${gantt.templates.tooltip_date_format(end)}</div>
+        <div>Fin: ${gantt.templates.tooltip_date_format(new Date(end.valueOf() - 1))}</div>
         <div>Progreso: ${(task.progress! * 100).toFixed(2)} % </div>
-        <div>Tiene impedimento: ${task["with_impediment"] ? "Si" : "No"}</div>
-        `;
-
+        <div>Tiene impedimento: ${task["with_impediment"] ? "Si" : "No"}</div>`;
       }
     };
     gantt.config.readonly = true;
