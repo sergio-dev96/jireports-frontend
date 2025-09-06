@@ -9,7 +9,7 @@ import { RippleModule } from 'primeng/ripple';
 import { MessageModule } from 'primeng/message';
 import { AppFloatingConfigurator } from '../../layout/component/app.floatingconfigurator';
 import { AuthResponse, AuthService } from '../../core/auth.service';
-
+import { environment } from '../../../environments/environment';
 
 @Component({
     selector: 'app-login',
@@ -44,31 +44,21 @@ import { AuthResponse, AuthService } from '../../core/auth.service';
                         </div>
 
                         <div>
-                            <label for="email1" class="block text-surface-900 dark:text-surface-0 text-xl font-medium mb-2">Email</label>
-                            <input pInputText id="email1" type="text" placeholder="usuario@gmail.com" class="w-full md:w-[30rem] mb-8" [(ngModel)]="email" />
-
-                            <label for="password1" class="block text-surface-900 dark:text-surface-0 font-medium text-xl mb-2">Password</label>
-                            <p-password id="password1" [(ngModel)]="password" placeholder="password" [toggleMask]="true" styleClass="mb-4" [fluid]="true" [feedback]="false"></p-password>
+                            <p-button label="Iniciar sesión con Google" styleClass="w-full" (click)="login()" icon="pi pi-google"></p-button>
                             @if(!loginResponse.detail.success){
                                 <p-message severity="error" variant="simple" size="small">{{loginResponse.detail.message}}</p-message>
                             }
-
-                            <div class="flex items-center justify-between mt-2 mb-8 gap-8">
-                                <div class="flex items-center">
-                                    <p-checkbox [(ngModel)]="checked" id="rememberme1" binary class="mr-2"></p-checkbox>
-                                    <label for="rememberme1">Remember me</label>
-                                </div>
-                                <span class="font-medium no-underline ml-2 text-right cursor-pointer text-primary">Forgot password?</span>
-                            </div>
-                            <p-button label="Sign In" styleClass="w-full" (click)="login()"></p-button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+
+        
     `
 })
 export class Login {
+
     authService = inject(AuthService);
 
     email: string = '';
@@ -79,24 +69,35 @@ export class Login {
 
     loginResponse: AuthResponse = { detail: { success: true } };
 
-    login() {
-        // Implement login logic here
-        this.authService.login({ username: this.email, password: this.password }).subscribe({
-            next: (response: AuthResponse) => {
-                this.loginResponse = response;
-                if (response.detail.success) {
-                    // Redirect to the dashboard or home page
-                    const returnUrl = this.authService.router.routerState.snapshot.root.queryParams['returnUrl'];
-                    this.authService.router.navigate([returnUrl || '/']);
-                } else {
-                    // Handle login failure
-                    console.error('Login failed', response.detail.message);
-                }
-            },
+    profile: any;
 
-            error: (err) => {
-                console.error('Login error', err);
-            }
-        });
+    constructor() {
+
     }
+
+    login() {
+        window.location.href = `${environment.apiUrl}/auth/login/google`;
+
+        // Implement login logic here
+        // this.authService.login({ username: this.email, password: this.password }).subscribe({
+        //     next: (response: AuthResponse) => {
+        //         this.loginResponse = response;
+        //         if (response.detail.success) {
+        //             // Redirect to the dashboard or home page
+        //             const returnUrl = this.authService.router.routerState.snapshot.root.queryParams['returnUrl'];
+        //             this.authService.router.navigate([returnUrl || '/']);
+        //         } else {
+        //             // Handle login failure
+        //             console.error('Login failed', response.detail.message);
+        //         }
+        //     },
+
+        //     error: (err) => {
+        //         console.error('Login error', err);
+        //     }
+        // });
+
+    }
+
+
 }

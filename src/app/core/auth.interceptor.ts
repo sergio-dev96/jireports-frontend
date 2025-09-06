@@ -16,7 +16,6 @@ export const authInterceptor: HttpInterceptorFn = (
     const authService = inject(AuthService);
     const accessToken = authService.currentAccessToken;
     const csrfToken = authService.currentCsrfToken;
-    console.log("Interceptor ejecutado, accessToken:", accessToken, "csrfToken:", csrfToken);
     if (accessToken) {
         req = addTokenHeaders(req, accessToken, csrfToken);
     }

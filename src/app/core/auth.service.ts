@@ -62,39 +62,24 @@ export class AuthService {
         return this.csrfToken.getValue();
     }
 
-    // Método de Login
-    login(credentials: { username: string; password: string }): Observable<AuthResponse> {
-        const formData = new FormData();
-        formData.append('username', credentials.username);
-        formData.append('password', credentials.password);
-        formData.append('grant_type', "password");
-
-        return this.http.post<AuthResponse>(`${environment.apiUrl}/auth/login`, formData, { withCredentials: true }).pipe(
-            tap((res) => this.handleAuthSuccess(res)),
-            catchError((error) => {
-                return of(error.error); // Retorna un observable vacío en caso de error  
-            })
-        );
-    }
-
     // Método de Logout
     logout(): void {
         // Llama al endpoint de logout para que el backend invalide la cookie
-        this.http.post(`${environment.apiUrl}/logout`, {}).subscribe(() => {
+        this.http.post(`${environment.apiUrl}/auth/logout`, {}).subscribe(() => {
             this.clearAuthData();
-            this.router.navigate(['/login']);
+            this.router.navigate(['/auth/login']);
         });
     }
 
     // Método para refrescar el token
     refreshToken(): Observable<AuthResponse> {
-
         // No se envía body. El refresh token viaja en la cookie HttpOnly.
         // El interceptor se encargará de añadir el header X-CSRF-Token.
         return this.http.post<AuthResponse>(`${environment.apiUrl}/auth/refresh`, {}, { withCredentials: true }).pipe(
             tap((res) => this.handleAuthSuccess(res)),
             catchError((error) => {
                 // Si el refresh falla, es un logout definitivo.
+                console.error("Refresh token fallido, cerrando sesión.", error);
                 this.clearAuthData();
                 return of(); // Retorna un observable vacío para no propagar el error
             })

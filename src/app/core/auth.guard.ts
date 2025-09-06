@@ -20,6 +20,24 @@ export const authGuard: CanActivateFn = () => {
     );
 };
 
+export const loginGuard: CanActivateFn = () => {
+    const authService = inject(AuthService);
+    const router = inject(Router);
+
+    return authService.isAuthenticated$.pipe(
+        take(1), // Toma el primer valor emitido y se desuscribe
+        map(isAuthenticated => {
+            if (!isAuthenticated) {
+                return true; // Permite el acceso
+            } else {
+                // Si no está autenticado, redirige a la página de login
+                return router.createUrlTree(['/']);
+            }
+        })
+    );
+};
+
+
 // export const authGuard: CanActivateFn = () => {
 //     const authService = inject(AuthService);
 //     const router = inject(Router);

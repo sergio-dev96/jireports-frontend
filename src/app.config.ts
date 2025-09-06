@@ -1,6 +1,6 @@
 import { provideHttpClient, withFetch, withInterceptors, withXsrfConfiguration } from '@angular/common/http';
 import { authInterceptor } from './app/core/auth.interceptor';
-import { ApplicationConfig } from '@angular/core';
+import { ApplicationConfig, importProvidersFrom, APP_INITIALIZER, provideAppInitializer, inject } from '@angular/core';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideRouter, withEnabledBlockingInitialNavigation, withInMemoryScrolling } from '@angular/router';
 import Aura from '@primeng/themes/aura';

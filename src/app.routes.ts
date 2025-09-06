@@ -17,7 +17,6 @@ export const appRoutes: Routes = [
             { path: 'pages', loadChildren: () => import('./app/pages/pages.routes') }
         ],
         canActivate: [authGuard],
-
     },
     { path: 'landing', component: Landing },
     { path: 'notfound', component: Notfound },

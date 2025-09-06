@@ -1,15 +1,19 @@
 import { Component } from '@angular/core';
 import { MenuItem } from 'primeng/api';
+import { MenuModule } from 'primeng/menu';
+import { BadgeModule } from 'primeng/badge';
+import { AvatarModule } from 'primeng/avatar';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { StyleClassModule } from 'primeng/styleclass';
 import { AppConfigurator } from './app.configurator';
 import { LayoutService } from '../service/layout.service';
+import { AuthService } from '../../core/auth.service';
 
 @Component({
     selector: 'app-topbar',
     standalone: true,
-    imports: [RouterModule, CommonModule, StyleClassModule, AppConfigurator],
+    imports: [RouterModule, CommonModule, StyleClassModule, AppConfigurator, AvatarModule, MenuModule, BadgeModule],
     template: ` <div class="layout-topbar">
         <div class="layout-topbar-logo-container">
             <button class="layout-menu-button layout-topbar-action" (click)="layoutService.onMenuToggle()">
@@ -33,7 +37,7 @@ import { LayoutService } from '../service/layout.service';
                         />
                     </g>
                 </svg>
-                <span>SAKAI</span>
+                <span>Reportes Jira</span>
             </a>
         </div>
 
@@ -72,10 +76,34 @@ import { LayoutService } from '../service/layout.service';
                         <i class="pi pi-inbox"></i>
                         <span>Messages</span>
                     </button>
-                    <button type="button" class="layout-topbar-action">
+                    <button type="button" class="layout-topbar-action" (click)="menu.toggle($event)">
                         <i class="pi pi-user"></i>
                         <span>Profile</span>
                     </button>
+                    <p-menu #menu [model]="itemsProfile" [popup]="true" class="flex justify-center" styleClass="w-full md:w-60">
+                        <ng-template #submenuheader let-item>
+                            <span class="text-primary font-bold">{{ item.label }}</span>
+                        </ng-template>
+                        <ng-template #item let-item>
+                            <a pRipple class="flex items-center p-menu-item-link">
+                                <span [class]="item.icon"></span>
+                                <span class="ml-2">{{ item.label }}</span>
+                                <p-badge *ngIf="item.badge" class="ml-auto" [value]="item.badge" />
+                                <span *ngIf="item.shortcut" class="ml-auto border border-surface rounded bg-emphasis text-muted-color text-xs p-1">
+                                    {{ item.shortcut }}
+                                </span>
+                            </a>
+                        </ng-template>
+                        <ng-template #end>
+                            <button pRipple class="relative overflow-hidden w-full border-0 bg-transparent flex items-start p-2 pl-4 hover:bg-surface-100 dark:hover:bg-surface-800 rounded-none cursor-pointer transition-colors duration-200">
+                                <p-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png" class="mr-2" shape="circle" />
+                                <span class="inline-flex flex-col">
+                                    <span class="font-bold">Amy Elsner</span>
+                                    <span class="text-sm">Miembro del equipo</span>
+                                </span>
+                            </button>
+                        </ng-template>
+                    </p-menu>
                 </div>
             </div>
         </div>
@@ -83,8 +111,30 @@ import { LayoutService } from '../service/layout.service';
 })
 export class AppTopbar {
     items!: MenuItem[];
+    itemsProfile: MenuItem[] | undefined;
 
-    constructor(public layoutService: LayoutService) {}
+    constructor(public layoutService: LayoutService, authService: AuthService) {
+        this.itemsProfile = [
+            {
+                label: 'Perfil',
+                items: [
+                    {
+                        label: 'Logout',
+                        icon: 'pi pi-sign-out',
+                        command: () => {
+                            // Implementar lógica de logout aquí
+                            authService.logout();
+                        },
+
+                        //shortcut: 'CTRL+Q'
+                    }
+                ]
+            },
+            {
+                separator: true
+            }
+        ];
+    }
 
     toggleDarkMode() {
         this.layoutService.layoutConfig.update((state) => ({ ...state, darkTheme: !state.darkTheme }));

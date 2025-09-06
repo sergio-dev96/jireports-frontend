@@ -26,6 +26,7 @@
                         "tsConfig": "tsconfig.app.json",
                         "inlineStyleLanguage": "scss",
                         "assets": [
+                            "src/silent-refresh.html",
                             {
                                 "glob": "**/*",
                                 "input": "public"
@@ -100,6 +101,6 @@
         }
     },
     "cli": {
-      "analytics": false
+        "analytics": false
     }
 }
