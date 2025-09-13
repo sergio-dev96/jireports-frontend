@@ -6,10 +6,13 @@ import { IftaLabelModule } from 'primeng/iftalabel';
 import { ButtonModule } from 'primeng/button';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Project, Sprint } from '../../../core/interfaces/gantt-interfaces';
+import { NgxGanttModule } from '../../../ngx-gantt/gantt.module';
+import { GanttEventType, GanttItem } from '../../../ngx-gantt/class';
+
 
 @Component({
   selector: 'app-gantt-progress',
-  imports: [MultiSelectModule, IftaLabelModule, ButtonModule, ReactiveFormsModule],
+  imports: [MultiSelectModule, IftaLabelModule, ButtonModule, ReactiveFormsModule, NgxGanttModule],
   templateUrl: './gantt-progress.component.html',
   styleUrl: './gantt-progress.component.scss'
 })
@@ -28,6 +31,17 @@ export class GanttProgressComponent implements OnInit {
 
   @ViewChild('ganttDiagram', { static: true }) ganttContainer!: ElementRef;
 
+  items: GanttItem[] = [
+    { id: '000000', title: 'Task 0', start: 1627729997, end: 1628421197, expandable: true },
+    { id: '000001', title: 'Task 1', start: 1617361997, end: 1625483597, links: ['000003', '000004', '000000'], expandable: true },
+    { id: '000002', title: 'Task 2', start: 1610536397, end: 1610622797 },
+    { id: '000003', title: 'Task 3', start: 1628507597, end: 1633345997, expandable: true,
+      events: [
+        { type: GanttEventType.blocking, start: 1629507597, end: 1630507597, color: 'red' },
+        { type: GanttEventType.priority, start: 1631507597, end: 1632507597, color: 'orange' }
+      ]
+     }
+  ];
 
   constructor() {
 

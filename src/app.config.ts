@@ -6,6 +6,10 @@ import { provideRouter, withEnabledBlockingInitialNavigation, withInMemoryScroll
 import Aura from '@primeng/themes/aura';
 import { providePrimeNG } from 'primeng/config';
 import { appRoutes } from './app.routes';
+import { GANTT_GLOBAL_CONFIG } from './app/ngx-gantt/gantt.config';
+import { GANTT_I18N_LOCALE_TOKEN, GanttI18nLocale } from './app/ngx-gantt/i18n';
+import { NgxGanttModule } from './app/ngx-gantt/gantt.module';
+import { es } from 'date-fns/locale';
 
 export const appConfig: ApplicationConfig = {
 
@@ -21,6 +25,24 @@ export const appConfig: ApplicationConfig = {
                 headerName: 'x-csrf-token' // Nombre del header CSRF
             })
         ),
-
+        importProvidersFrom(NgxGanttModule),
+        // {
+        //     provide: GANTT_I18N_LOCALE_TOKEN,
+        //     useValue: {
+        //         id: GanttI18nLocale.esEs,
+        //         dateLocale: es,
+        //     }
+        // },
+        {
+            provide: GANTT_GLOBAL_CONFIG,
+            useValue: {
+                locale: GanttI18nLocale.esEs,
+                dateOptions: {
+                    timeZone: 'America/Lima',
+                    weekStartsOn: 1
+                }
+            }
+        }
     ],
+
 };

@@ -15,6 +15,14 @@
     </div>
 </form>
 
-<div class="card" [hidden]="!isLoaded">
-    <div #ganttDiagram class="gantt-chart"></div>
+<div class="card gantt-container">
+    <!-- <div #ganttDiagram class="gantt-chart"></div> -->
+    <ngx-gantt #gantt [items]="items">
+      <ngx-gantt-table>
+        <ngx-gantt-column name="TEST" width="300px" height="500px">
+          <ng-template #cell let-item="item"> {{ item.title }} </ng-template>
+        </ngx-gantt-column>
+      </ngx-gantt-table>
+    </ngx-gantt>
 </div>
+<!-- component.html -->
