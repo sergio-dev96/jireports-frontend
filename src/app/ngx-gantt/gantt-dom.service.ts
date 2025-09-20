@@ -50,7 +50,7 @@ export class GanttDomService implements OnDestroy {
     constructor(
         private ngZone: NgZone,
         @Inject(PLATFORM_ID) private platformId: string
-    ) {}
+    ) { }
 
     private disableBrowserWheelEvent() {
         const container = this.mainContainer as HTMLElement;
@@ -139,7 +139,7 @@ export class GanttDomService implements OnDestroy {
     getResizeByElement(element: Element) {
         return new Observable((observer) => {
             const resizeObserver = new ResizeObserver(() => {
-                observer.next();
+                observer.next(null);
             });
             resizeObserver.observe(element);
         });

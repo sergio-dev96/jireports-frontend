@@ -8,11 +8,13 @@ import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Project, Sprint } from '../../../core/interfaces/gantt-interfaces';
 import { NgxGanttModule } from '../../../ngx-gantt/gantt.module';
 import { GanttEventType, GanttItem } from '../../../ngx-gantt/class';
+import { CommonModule } from '@angular/common';
+import { TagModule } from 'primeng/tag';
 
 
 @Component({
   selector: 'app-gantt-progress',
-  imports: [MultiSelectModule, IftaLabelModule, ButtonModule, ReactiveFormsModule, NgxGanttModule],
+  imports: [MultiSelectModule, IftaLabelModule, ButtonModule, ReactiveFormsModule, NgxGanttModule, CommonModule, TagModule],
   templateUrl: './gantt-progress.component.html',
   styleUrl: './gantt-progress.component.scss'
 })
@@ -33,14 +35,16 @@ export class GanttProgressComponent implements OnInit {
 
   items: GanttItem[] = [
     { id: '000000', title: 'Task 0', start: 1627729997, end: 1628421197, expandable: true },
-    { id: '000001', title: 'Task 1', start: 1617361997, end: 1625483597, links: ['000003', '000004', '000000'], expandable: true },
+    { id: '000001', title: 'Task 1', start: 1617361997, end: 1625483597, links: ['000003', '000004', '000000'], expandable: true, group_id: '000000' },
     { id: '000002', title: 'Task 2', start: 1610536397, end: 1610622797 },
-    { id: '000003', title: 'Task 3', start: 1628507597, end: 1633345997, expandable: true,
+    {
+      id: '000003', title: 'Task 3', start: 1628507597, end: 1633345997, expandable: true,
+      origin: { assignee: 'John Doe', story_points: 5, iconUrl: 'https://teleagro.atlassian.net/rest/api/2/universal_avatar/view/type/issuetype/avatar/10315?size=medium' },
       events: [
         { type: GanttEventType.blocking, start: 1629507597, end: 1630507597, color: 'red' },
         { type: GanttEventType.priority, start: 1631507597, end: 1632507597, color: 'orange' }
       ]
-     }
+    }
   ];
 
   constructor() {
@@ -69,7 +73,7 @@ export class GanttProgressComponent implements OnInit {
     });
     let dateToString = gantt.date.date_to_str('%d/%m/%Y');
 
-    gantt.templates.task_end_date = function(date) {
+    gantt.templates.task_end_date = function (date) {
       return dateToString(new Date(date.valueOf() - 1));
     };
 

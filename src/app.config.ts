@@ -1,6 +1,6 @@
 import { provideHttpClient, withFetch, withInterceptors, withXsrfConfiguration } from '@angular/common/http';
 import { authInterceptor } from './app/core/auth.interceptor';
-import { ApplicationConfig, importProvidersFrom, APP_INITIALIZER, provideAppInitializer, inject } from '@angular/core';
+import { ApplicationConfig, importProvidersFrom } from '@angular/core';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideRouter, withEnabledBlockingInitialNavigation, withInMemoryScrolling } from '@angular/router';
 import Aura from '@primeng/themes/aura';
@@ -26,13 +26,6 @@ export const appConfig: ApplicationConfig = {
             })
         ),
         importProvidersFrom(NgxGanttModule),
-        // {
-        //     provide: GANTT_I18N_LOCALE_TOKEN,
-        //     useValue: {
-        //         id: GanttI18nLocale.esEs,
-        //         dateLocale: es,
-        //     }
-        // },
         {
             provide: GANTT_GLOBAL_CONFIG,
             useValue: {
@@ -40,6 +33,10 @@ export const appConfig: ApplicationConfig = {
                 dateOptions: {
                     timeZone: 'America/Lima',
                     weekStartsOn: 1
+                },
+                styleOptions: {
+                    lineHeight: 25, // custom line height
+                    barHeight: 15 // custom Bar height
                 }
             }
         }

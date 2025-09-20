@@ -206,3 +206,10 @@ $gantt-bar-link-drop-border: 5px;
     }
   }
 }
+
+.gant-bar-event {
+  position: absolute;
+  border-radius: 4px;
+  z-index: 3;
+  background: #fff;
+}

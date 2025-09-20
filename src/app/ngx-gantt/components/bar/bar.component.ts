@@ -13,7 +13,8 @@ import {
     ViewChildren,
     QueryList,
     NgZone,
-    SimpleChanges
+    SimpleChanges,
+    Renderer2
 } from '@angular/core';
 import { from, fromEvent, merge, Observable } from 'rxjs';
 import { startWith, switchMap, take, takeUntil } from 'rxjs/operators';
@@ -24,7 +25,7 @@ import { barBackground } from '../../gantt.styles';
 import { GanttBarClickEvent } from '../../class';
 import { GANTT_UPPER_TOKEN, GanttUpper } from '../../gantt-upper';
 import { GanttItemUpper } from '../../gantt-item-upper';
-import { NgTemplateOutlet } from '@angular/common';
+import { CommonModule, NgTemplateOutlet } from '@angular/common';
 
 function linearGradient(sideOrCorner: string, color: string, stop: string) {
     return `linear-gradient(${sideOrCorner},${color} 0%,${stop} 40%)`;
@@ -34,7 +35,7 @@ function linearGradient(sideOrCorner: string, color: string, stop: string) {
     selector: 'ngx-gantt-bar,gantt-bar',
     templateUrl: './bar.component.html',
     providers: [GanttBarDrag],
-    imports: [NgTemplateOutlet]
+    imports: [NgTemplateOutlet, CommonModule]
 })
 export class NgxGanttBarComponent extends GanttItemUpper implements OnInit, AfterViewInit, OnChanges, OnDestroy {
     @Output() barClick = new EventEmitter<GanttBarClickEvent>();
@@ -50,9 +51,14 @@ export class NgxGanttBarComponent extends GanttItemUpper implements OnInit, Afte
         private drag: GanttBarDrag,
         elementRef: ElementRef<HTMLDivElement>,
         @Inject(GANTT_UPPER_TOKEN) public override ganttUpper: GanttUpper,
-        private ngZone: NgZone
+        private ngZone: NgZone,
+        renderer: Renderer2
     ) {
-        super(elementRef, ganttUpper);
+        super(elementRef, ganttUpper, renderer);
+    }
+
+    identify(index, item) {
+        return index;
     }
 
     override ngOnInit() {
@@ -82,7 +88,9 @@ export class NgxGanttBarComponent extends GanttItemUpper implements OnInit, Afte
         }
     }
 
-    ngAfterViewInit() {
+    override ngAfterViewInit() {
+        super.ngAfterViewInit();
+
         // Note: the zone may be nooped through `BootstrapOptions` when bootstrapping the root module. This means
         // the `onStable` will never emit any value.
         const onStable$ = this.ngZone.isStable ? from(Promise.resolve()) : this.ngZone.onStable.pipe(take(1));
@@ -116,6 +124,8 @@ export class NgxGanttBarComponent extends GanttItemUpper implements OnInit, Afte
             .subscribe((event) => {
                 event.stopPropagation();
             });
+
+
     }
 
     onBarClick(event: Event) {

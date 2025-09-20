@@ -17,12 +17,28 @@
 
 <div class="card gantt-container">
     <!-- <div #ganttDiagram class="gantt-chart"></div> -->
-    <ngx-gantt #gantt [items]="items">
-      <ngx-gantt-table>
-        <ngx-gantt-column name="TEST" width="300px" height="500px">
-          <ng-template #cell let-item="item"> {{ item.title }} </ng-template>
-        </ngx-gantt-column>
-      </ngx-gantt-table>
+    <ngx-gantt #gantt [items]="items" [showToolbar]="true">
+        <ngx-gantt-table>
+            <ngx-gantt-column name="Tareas" width="250px">
+                <ng-template #cell let-item="item">
+                    <div class="flex justify-between w-full items-center">
+                        <div class="flex">
+                            @if (item.origin) {
+                            <img alt="issueType" [src]="item.origin.iconUrl" width="15"
+                                style="vertical-align: middle" />
+                            }
+                            <span>{{ item.title }}</span>
+                        </div>
+                        <div class="flex">
+                            <p-tag [style]="{'line-height': '12px !important'}" icon="pi pi-user" value="1" />
+                        </div>
+                    </div>
+
+                </ng-template>
+            </ngx-gantt-column>
+        </ngx-gantt-table>
+
     </ngx-gantt>
+
 </div>
 <!-- component.html -->

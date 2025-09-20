@@ -10,6 +10,7 @@ export interface GanttItemRefs {
     width: number;
     x: number;
     y: number;
+    color?: string;
 }
 
 export enum GanttItemType {
@@ -23,7 +24,7 @@ export enum GanttEventType {
     priority = 'priority'
 }
 
-export interface GanttEvent{
+export interface GanttEvent {
     type: GanttEventType;
     start: number | Date;
     end: number | Date;
@@ -79,7 +80,12 @@ export class GanttItemInternal {
         return this.refs$.getValue();
     }
 
+    get eventRefs() {
+        return this.eventRefs$.getValue();
+    }
+
     refs$ = new BehaviorSubject<{ width: number; x: number; y: number }>(null as any);
+    eventRefs$ = new BehaviorSubject<{ width: number; x: number; y: number, color?: string }[]>(null as any);
 
     constructor(
         item: GanttItem,
@@ -130,6 +136,11 @@ export class GanttItemInternal {
 
     updateRefs(refs: GanttItemRefs) {
         this.refs$.next(refs);
+    }
+
+    updateEventRefs(eventRefs: GanttItemRefs[]) {
+        console.log('eventRefs', this.eventRefs);
+        this.eventRefs$.next(eventRefs);
     }
 
     updateDate(start: GanttDate, end: GanttDate) {
