@@ -16,15 +16,15 @@
 </form>
 
 <div class="card gantt-container">
-    <!-- <div #ganttDiagram class="gantt-chart"></div> -->
-    <ngx-gantt #gantt [items]="items" [showToolbar]="true">
+    <ngx-gantt #gantt [items]="items" [showToolbar]="true" [loading]="isLoading" [viewType]="getViewType">
         <ngx-gantt-table>
-            <ngx-gantt-column name="Tareas" width="250px">
+            <ngx-gantt-column name="Tareas" [width]="350" [showExpandIcon]="true">
+
                 <ng-template #cell let-item="item">
                     <div class="flex justify-between w-full items-center">
                         <div class="flex">
                             @if (item.origin) {
-                            <img alt="issueType" [src]="item.origin.iconUrl" width="15"
+                            <img alt="issueType" [src]="item.origin.issue_icon" width="15"
                                 style="vertical-align: middle" />
                             }
                             <span>{{ item.title }}</span>
@@ -41,4 +41,3 @@
     </ngx-gantt>
 
 </div>
-<!-- component.html -->

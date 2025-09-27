@@ -17,6 +17,8 @@ export abstract class GanttItemUpper implements OnChanges, OnInit, OnDestroy, Af
 
     public refsUnsubscribe$ = new Subject<void>();
 
+    public eventRefsUnsubscribe$ = new Subject<void>();
+
     @ViewChildren('eventDiv', { read: ElementRef }) eventDivs!: QueryList<ElementRef>;
 
     constructor(protected elementRef: ElementRef<HTMLElement>, @Inject(GANTT_UPPER_TOKEN) protected ganttUpper: GanttUpper,
@@ -29,7 +31,7 @@ export abstract class GanttItemUpper implements OnChanges, OnInit, OnDestroy, Af
         });
     }
     ngAfterViewInit(): void {
-        this.item.eventRefs$.pipe(takeUntil(this.refsUnsubscribe$)).subscribe(() => {
+        this.item.eventRefs$.pipe(takeUntil(this.eventRefsUnsubscribe$)).subscribe(() => {
             this.setEventPositions();
         });
     }
@@ -47,7 +49,10 @@ export abstract class GanttItemUpper implements OnChanges, OnInit, OnDestroy, Af
         this.item.refs$.pipe(takeUntil(this.refsUnsubscribe$)).subscribe(() => {
             this.setPositions();
         });
-        this.item.eventRefs$.pipe(takeUntil(this.refsUnsubscribe$)).subscribe(() => {
+
+        this.eventRefsUnsubscribe$.next();
+        this.eventRefsUnsubscribe$.complete();
+        this.item.eventRefs$.pipe(takeUntil(this.eventRefsUnsubscribe$)).subscribe(() => {
             this.setEventPositions();
         });
     }
@@ -87,7 +92,7 @@ export abstract class GanttItemUpper implements OnChanges, OnInit, OnDestroy, Af
         this.unsubscribe$.complete();
         this.refsUnsubscribe$.next();
         this.refsUnsubscribe$.complete();
-        // this.eventRefsUnsubscribe$.next();
-        // this.eventRefsUnsubscribe$.complete();
+        this.eventRefsUnsubscribe$.next();
+        this.eventRefsUnsubscribe$.complete();
     }
 }

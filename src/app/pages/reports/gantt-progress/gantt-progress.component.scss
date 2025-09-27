@@ -1,4 +1,4 @@
 .card.gantt-container {
-
-    height: 500px;
+    min-height: calc(100vh - 380px);
+    height: calc(100vh - 380px);
 }

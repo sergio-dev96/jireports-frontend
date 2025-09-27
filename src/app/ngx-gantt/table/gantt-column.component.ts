@@ -15,6 +15,7 @@ export class NgxGanttTableColumnComponent {
     @Input()
     set width(width: number | string) {
         this.columnWidth = coerceCssPixelValue(width);
+        console.log("columnWidth", this.columnWidth);
     }
 
     @Input() name: string;
@@ -25,7 +26,7 @@ export class NgxGanttTableColumnComponent {
 
     @ContentChild('header', { static: true }) headerTemplateRef: TemplateRef<any>;
 
-    constructor(@Inject(GANTT_UPPER_TOKEN) public ganttUpper: GanttUpper, private elementRef: ElementRef) {}
+    constructor(@Inject(GANTT_UPPER_TOKEN) public ganttUpper: GanttUpper, private elementRef: ElementRef) { }
 
     get classList(): DOMTokenList {
         return this.elementRef.nativeElement.classList;
