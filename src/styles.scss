@@ -3,36 +3,3 @@
 @use './assets/layout/layout.scss';
 @use 'primeicons/primeicons.css';
 @use './assets/demo/demo.scss';
-
-@import 'dhtmlx-gantt/codebase/dhtmlxgantt.css';
-
-:root {
-    --dhx-gantt-task-progress-color: rgb(0 0 0 / 30%);
-}
-.gantt-chart {
-    position: relative;
-    width: 100%;
-    height: 600px;
-}
-
-
-.gantt_task_line.done {
-    --dhx-gantt-task-background: #0bb40b;
-    --dhx-gantt-task-color: #fff;
-}
-
-
-.gantt_task_line.ready {
-    --dhx-gantt-task-background: #105edb;
-    --dhx-gantt-task-color: #fff;
-}
-
-.gantt_task_line.blocked {
-    --dhx-gantt-task-background: #be8e3a;
-    --dhx-gantt-task-color: #000000;
-}
-
-.gantt_task_line.out-of-time {
-    --dhx-gantt-task-background: #be3a3a;
-    --dhx-gantt-task-color: #fff;
-}

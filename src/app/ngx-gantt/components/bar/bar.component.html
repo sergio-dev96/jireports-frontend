@@ -13,16 +13,29 @@
   }
 </div>
 <div class="gantt-bar-border"></div>
-<div #content class="gantt-bar-content" (click)="onBarClick($event)">
+<div #content class="gantt-bar-content" (click)="onBarClick($event)" tooltipPosition="bottom">
   @if (item.progress >= 0) {
   <div class="gantt-bar-content-progress" [style.width.%]="item.progress * 100"></div>
   }
   @if (item.origin.events && item.origin.events.length > 0) {
   @for (event of item.origin.events; track event.start ;let index = $index){
-  <div class="gant-bar-event" #eventDiv></div>
+  <div class="gant-bar-event" [pTooltip]="tooltipEvent" #eventDiv tooltipStyleClass="tooltip-event"></div>
+  <ng-template #tooltipEvent>
+    <div class="flex flex-col">
+      <div class="font-bold">{{event.data.title}}</div>
+      <div class="text-sm">Inicio: {{event.start | date:'dd/MM/yyyy h:mm a'}}</div>
+      <div class="text-sm">Fin: {{event.end | date:'dd/MM/yyyy h:mm a'}}</div>
+    </div>
+  </ng-template>
   }
 
   }
   <ng-template [ngTemplateOutlet]="template" [ngTemplateOutletContext]="{ item: item.origin, refs: item.refs }">
   </ng-template>
 </div>
+<ng-template #tooltipItem>
+  <div class="flex flex-col">
+    <div class="text-sm">Inicio: {{item.start.value| date:'dd/MM/yyyy h:mm a'}}</div>
+    <div class="text-sm">Fin: {{item.end.value| date:'dd/MM/yyyy h:mm a'}}</div>
+  </div>
+</ng-template>

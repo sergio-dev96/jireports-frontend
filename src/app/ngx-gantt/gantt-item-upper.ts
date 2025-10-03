@@ -71,13 +71,13 @@ export abstract class GanttItemUpper implements OnChanges, OnInit, OnDestroy, Af
 
     private setEventPositions() {
         if (this.item.origin.events && this.eventDivs && this.eventDivs.length > 0 && this.item.eventRefs) {
-            console.log('seteventposition', this.item);
             this.eventDivs.forEach((eventDiv, index) => {
                 const itemElement = eventDiv.nativeElement;
                 itemElement.style.background = this.item.eventRefs.at(index)?.color || '#fff';
                 itemElement.style.left = (this.item.eventRefs.at(index)?.x - this.item.refs?.x) + 'px';
                 itemElement.style.top = 2 + 'px';
                 itemElement.style.width = this.item.eventRefs.at(index)?.width + 'px';
+                
                 if (this.item.type === GanttItemType.bar) {
                     itemElement.style.height = (this.ganttUpper.styles.barHeight - 4) + 'px';
                 } else if (this.item.type === GanttItemType.range) {

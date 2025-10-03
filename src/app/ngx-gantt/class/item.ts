@@ -30,6 +30,7 @@ export interface GanttEvent {
     end: number | Date;
     color?: string;
     barStyle?: Partial<CSSStyleDeclaration>;
+    data?: any;
 }
 
 export interface GanttItem<T = unknown> {

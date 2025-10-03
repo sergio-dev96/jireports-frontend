@@ -1,24 +1,48 @@
-<form [formGroup]="ganttForm" class="card flex flex-col gap-4 mb-0" (submit)="getIssues()">
-    <div class="font-semibold text-xl">Búsqueda de Issues</div>
+<div class="font-semibold text-xl">Búsqueda de Issues</div>
+<form [formGroup]="ganttForm" class="card flex flex-row gap-4 flex-wrap align-baseline" (submit)="getIssues()">
     <p-iftalabel class="flex flex-col gap-2">
-        <p-multiselect inputId="ms_projects" [options]="projects" formControlName="selectedProjects" optionLabel="name"
-            placeholder="Seleccione los proyectos" [maxSelectedLabels]="5" styleClass="w-100" display="chip" />
+        <p-select inputId="ms_projects" [options]="projects" formControlName="selectedProjects" optionLabel="name"
+            placeholder="Seleccione los proyectos" styleClass="w-100" display="chip" />
         <label for="ms_projects">Proyectos</label>
     </p-iftalabel>
     <p-iftalabel class="flex flex-col gap-2">
-        <p-multiselect inputId="ms_sprints" [options]="sprints" formControlName="selectedSprints" optionLabel="name"
-            placeholder="Seleccione los sprints" [maxSelectedLabels]="5" styleClass="w-100" display="chip" />
+        <p-select inputId="ms_sprints" [options]="sprints" formControlName="selectedSprints" optionLabel="name"
+            placeholder="Seleccione los sprints" styleClass="w-100" display="chip" />
         <label for="ms_sprints">Sprints</label>
     </p-iftalabel>
     <div class="flex flex-col gap-2">
-        <p-button label="Buscar" type="submit" icon="pi pi-search" [loading]="isLoading" />
+        <p-button label="Buscar" type="submit" icon="pi pi-search" size="large" [loading]="isLoading" />
     </div>
 </form>
 
 <div class="card gantt-container">
-    <ngx-gantt #gantt [items]="items" [showToolbar]="true" [loading]="isLoading" [viewType]="getViewType">
-        <ngx-gantt-table>
-            <ngx-gantt-column name="Tareas" [width]="350" [showExpandIcon]="true">
+    <div class="flex flex-row gap-3 mb-3">
+        <p-tag [style]="{ border: '2px solid var(--border-color)', background: '#4CAF50', color: 'white'}">
+            <div class="flex items-center">
+                <span class="text-sm">
+                    Finalizado
+                </span>
+            </div>
+        </p-tag>
+        <p-tag [style]="{ border: '2px solid var(--border-color)', background: 'rgb(241, 14, 14)', color: 'white'}">
+            <div class="flex items-center">
+                <span class="text-sm">
+                    Impedimento
+                </span>
+            </div>
+        </p-tag>
+        <p-tag [style]="{ border: '2px solid var(--border-color)', background: 'rgb(231, 112, 0)', color: 'white'}">
+            <div class="flex items-center">
+                <span class="text-sm">
+                    Priorización
+                </span>
+            </div>
+        </p-tag>
+    </div>
+    <ngx-gantt #gantt [items]="items" [showToolbar]="true" [loading]="isLoading" [viewType]="getViewType"
+        [toolbarOptions]="toolbarOptions">
+        <ngx-gantt-table [width]="350">
+            <ngx-gantt-column name="Tareas" [width]="400" [showExpandIcon]="true">
 
                 <ng-template #cell let-item="item">
                     <div class="flex justify-between w-full items-center">
@@ -29,11 +53,36 @@
                             }
                             <span>{{ item.title }}</span>
                         </div>
+                        @if(item.children && item.children.length > 0) {
                         <div class="flex">
-                            <p-tag [style]="{'line-height': '12px !important'}" icon="pi pi-user" value="1" />
+                            <p-tag [style]="{'line-height': '12px !important'}" icon="pi pi-user"
+                                value="{{item.origin.issue_total_assigned_children}}" />
                         </div>
+                        }
                     </div>
 
+                </ng-template>
+            </ngx-gantt-column>
+            <ngx-gantt-column name="Puntos" [width]="70">
+                <ng-template #cell let-item="item">
+                    @if(!item.children){
+                    <div class="flex justify-between w-full items-center">
+                        <div class="flex">
+                            <span>{{ item.origin.story_points }}</span>
+                        </div>
+                    </div>
+                    }
+                </ng-template>
+            </ngx-gantt-column>
+            <ngx-gantt-column name="Desarrollador" [width]="250">
+                <ng-template #cell let-item="item">
+                    @if(!item.children){
+                    <div class="flex justify-between w-full items-center">
+                        <div class="flex">
+                            <span>{{ item.origin.assignee }}</span>
+                        </div>
+                    </div>
+                    }
                 </ng-template>
             </ngx-gantt-column>
         </ngx-gantt-table>
