@@ -140,7 +140,6 @@ export class GanttItemInternal {
     }
 
     updateEventRefs(eventRefs: GanttItemRefs[]) {
-        console.log('eventRefs', this.eventRefs);
         this.eventRefs$.next(eventRefs);
     }
 

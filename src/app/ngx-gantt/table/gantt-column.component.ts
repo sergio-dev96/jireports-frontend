@@ -15,7 +15,6 @@ export class NgxGanttTableColumnComponent {
     @Input()
     set width(width: number | string) {
         this.columnWidth = coerceCssPixelValue(width);
-        console.log("columnWidth", this.columnWidth);
     }
 
     @Input() name: string;

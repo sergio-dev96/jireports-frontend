@@ -33,7 +33,7 @@ export class AppMenu {
                         { label: 'Progreso (Gantt)', icon: 'pi pi-fw pi-clock', routerLink: ['/pages/gantt-progress'] }
                     ]
             },
-
+/*
             {
                 label: 'UI Components',
                 items: [
@@ -162,7 +162,7 @@ export class AppMenu {
                     }
                 ]
             }
-
+*/
         ];
     }
 }
