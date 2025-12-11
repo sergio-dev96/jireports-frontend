@@ -1,0 +1,15 @@
+<p-fluid class="grid grid-cols-12 gap-8">
+    <div class="col-span-12 xl:col-span-6">
+        <div class="card">
+            <div class="font-semibold text-xl mb-4">Bar</div>
+            <p-chart type="bar" [data]="barPointData" [options]="barOptions"></p-chart>
+        </div>
+    </div>
+
+    <div class="col-span-12 xl:col-span-6">
+        <div class="card flex flex-col items-center">
+            <div class="font-semibold text-xl mb-4">Doughnut</div>
+            <p-chart type="doughnut" [data]="pieData" [options]="pieOptions"></p-chart>
+        </div>
+    </div>
+</p-fluid>

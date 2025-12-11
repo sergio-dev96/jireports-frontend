@@ -30,7 +30,8 @@ export class AppMenu {
                 items:
                     [
                         { label: 'Retrasados', icon: 'pi pi-fw pi-clock', routerLink: ['/pages/retrasado'] },
-                        { label: 'Progreso (Gantt)', icon: 'pi pi-fw pi-clock', routerLink: ['/pages/gantt-progress'] }
+                        { label: 'Progreso (Gantt)', icon: 'pi pi-fw pi-clock', routerLink: ['/pages/gantt-progress'] },
+                        { label: 'Resumen por version', icon: 'pi pi-fw pi-clock', routerLink: ['/pages/resumen-version'] }
                     ]
             },
 
