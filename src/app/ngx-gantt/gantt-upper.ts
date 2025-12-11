@@ -394,10 +394,8 @@ export abstract class GanttUpper implements OnChanges, OnInit, OnDestroy {
                 y: (this.styles.lineHeight - this.styles.barHeight) / 2 - 1
             });
 
-
             if (item instanceof GanttItemInternal && item.origin.events) {
                 const eventRefs = item.origin.events.map(event => {
-                    console.log('event', event, event.color ? event.color : (event.type == GanttEventType.blocking ? "#f10e0eff" : "#e77000ff"));
                     return {
                         width: event.start && event.end ? this.view.getDateRangeWidth(new GanttDate(event.start), new GanttDate(event.end)) : 0,
                         x: event.start ? this.view.getXPointByDate(new GanttDate(event.start)) : 0,
