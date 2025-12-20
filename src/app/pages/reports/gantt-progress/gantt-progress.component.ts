@@ -32,6 +32,7 @@ export class GanttProgressComponent implements OnInit {
     selectedProjects: new FormControl<Project | null>(null),
     selectedSprints: new FormControl<Sprint | null>(null)
   });
+  
   isLoading: boolean = false;
   isLoaded: boolean = false;
 

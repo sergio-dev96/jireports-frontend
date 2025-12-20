@@ -34,7 +34,7 @@ export class AppMenu {
                         { label: 'Resumen por version', icon: 'pi pi-fw pi-clock', routerLink: ['/pages/resumen-version'] }
                     ]
             },
-/*
+//
             {
                 label: 'UI Components',
                 items: [
@@ -163,7 +163,7 @@ export class AppMenu {
                     }
                 ]
             }
-*/
+//
         ];
     }
 }

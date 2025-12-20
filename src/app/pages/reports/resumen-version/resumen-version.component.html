@@ -1,15 +1,42 @@
+<div class="font-semibold text-xl">Búsqueda de Issues</div>
+<form [formGroup]="resumeForm" class="card flex flex-row gap-4 flex-wrap align-baseline" (submit)="getResume()">
+    <p-iftalabel class="flex flex-col gap-2">
+        <p-select inputId="ms_projects" [options]="projects" formControlName="selectedProjects" optionLabel="name"
+            placeholder="Seleccione los proyectos" styleClass="w-100" display="chip" />
+        <label for="ms_projects">Proyectos</label>
+    </p-iftalabel>
+    <p-iftalabel class="flex flex-col gap-2">
+        <p-select inputId="ms_sprints" [options]="versions" formControlName="selectedVersion"
+            placeholder="Seleccione los sprints" styleClass="w-100" display="chip" />
+        <label for="ms_sprints">Versión</label>
+    </p-iftalabel>
+    <div class="flex flex-col gap-2">
+        <p-button label="Buscar" type="submit" icon="pi pi-search" size="large" [loading]="isLoading" />
+    </div>
+</form>
 <p-fluid class="grid grid-cols-12 gap-8">
     <div class="col-span-12 xl:col-span-6">
         <div class="card">
-            <div class="font-semibold text-xl mb-4">Bar</div>
-            <p-chart type="bar" [data]="barPointData" [options]="barOptions"></p-chart>
+            inicio:
+            fin:
         </div>
     </div>
-
     <div class="col-span-12 xl:col-span-6">
         <div class="card flex flex-col items-center">
             <div class="font-semibold text-xl mb-4">Doughnut</div>
             <p-chart type="doughnut" [data]="pieData" [options]="pieOptions"></p-chart>
+        </div>
+    </div>
+    <div class="col-span-12 xl:col-span-6">
+        <div class="card">
+            <div class="font-semibold text-xl mb-4">Puntos del proyecto</div>
+            <p-chart type="bar" [data]="barPointData" [options]="barOptions"></p-chart>
+        </div>
+    </div>
+    <div class="col-span-12 xl:col-span-6">
+        <div class="card">
+            <div class="font-semibold text-xl mb-4">Puntos fuera del proyecto</div>
+            <p-chart type="bar" [data]="barPointData" [options]="barOptions"></p-chart>
         </div>
     </div>
 </p-fluid>

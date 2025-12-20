@@ -1,10 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { ChartModule } from 'primeng/chart';
 import { FluidModule } from 'primeng/fluid';
+import { SelectModule } from 'primeng/select';
+import { IftaLabelModule } from 'primeng/iftalabel';
+import { ButtonModule } from 'primeng/button';
+import { Project } from '../../../core/interfaces/gantt-interfaces';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { ReportsService } from '../../service/reports.service';
 
 @Component({
   selector: 'app-resumen-version',
-  imports: [ChartModule, FluidModule],
+  imports: [ReactiveFormsModule,ChartModule, FluidModule,SelectModule,IftaLabelModule,ButtonModule],
   templateUrl: './resumen-version.component.html',
   styleUrl: './resumen-version.component.scss'
 })
@@ -14,7 +20,28 @@ export class ResumenVersionComponent implements OnInit {
   barOptions: any;
   pieOptions: any;
 
+  isLoading: boolean = false;
+  isLoaded: boolean = false;
+
+  versions : number[] = [1,2,3,4,5,6,7,8,9]
+  projects: Project[] = [];
+
+  reportsService = inject(ReportsService);
+
+  resumeForm: FormGroup = new FormGroup({
+    selectedProjects: new FormControl<Project | null>(null),
+    selectedVersion: new FormControl<number | null>(null)
+  });
+
   ngOnInit() {
+    this.reportsService.getProjects().subscribe({
+      next: (data) => {
+        this.projects = data.projects;
+      }
+    }
+    );
+
+
     this.initCharts();
   }
 
@@ -92,6 +119,10 @@ export class ResumenVersionComponent implements OnInit {
         }
       }
     };
+  }
+
+  getResume(){
+
   }
 }
 
