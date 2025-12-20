@@ -387,7 +387,7 @@ export abstract class GanttUpper implements OnChanges, OnInit, OnDestroy {
     }
 
     computeItemsRefs(...items: GanttItemInternal[] | GanttBaselineItemInternal[]) {
-        items.forEach((item) => {
+        items.forEach((item: GanttItemInternal | GanttBaselineItemInternal) => {
             item.updateRefs({
                 width: item.start && item.end ? this.view.getDateRangeWidth(item.start, item.end) : 0,
                 x: item.start ? this.view.getXPointByDate(item.start) : 0,
@@ -396,8 +396,9 @@ export abstract class GanttUpper implements OnChanges, OnInit, OnDestroy {
 
             if (item instanceof GanttItemInternal && item.origin.events) {
                 const eventRefs = item.origin.events.map(event => {
+
                     return {
-                        width: event.start && event.end ? this.view.getDateRangeWidth(new GanttDate(event.start), new GanttDate(event.end)) : 0,
+                        width: this.view.getDateRangeWidth(new GanttDate(event.start), new GanttDate(event.end ? event.end : new Date())),
                         x: event.start ? this.view.getXPointByDate(new GanttDate(event.start)) : 0,
                         y: (this.styles.lineHeight - this.styles.barHeight) / 2 - 1,
                         color: event.color ? event.color : (event.type == GanttEventType.blocking ? "#f10e0eff" : "#e77000ff")
