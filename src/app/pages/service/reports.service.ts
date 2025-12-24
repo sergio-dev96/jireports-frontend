@@ -22,6 +22,11 @@ export class ReportsService {
       { params: { projects, sprints } });
   }
 
+  getProjectVersionProgress(projects: string, version: string): Observable<any> {
+    return this.http.get<any>(`${environment.apiUrl}/jira/version-progress`,
+      { params: { projects, version } });
+  }
+
   getProjects(): Observable<any> {
     return this.http.get<any>(`${environment.apiUrl}/jira/projects`);
   }

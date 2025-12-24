@@ -4,18 +4,21 @@ import { FluidModule } from 'primeng/fluid';
 import { SelectModule } from 'primeng/select';
 import { IftaLabelModule } from 'primeng/iftalabel';
 import { ButtonModule } from 'primeng/button';
+import { SkeletonModule } from 'primeng/skeleton';
 import { Project } from '../../../core/interfaces/gantt-interfaces';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ReportsService } from '../../service/reports.service';
 
 @Component({
   selector: 'app-resumen-version',
-  imports: [ReactiveFormsModule,ChartModule, FluidModule,SelectModule,IftaLabelModule,ButtonModule],
+  imports: [ReactiveFormsModule,ChartModule, FluidModule,SelectModule,IftaLabelModule,ButtonModule,SkeletonModule],
   templateUrl: './resumen-version.component.html',
   styleUrl: './resumen-version.component.scss'
 })
 export class ResumenVersionComponent implements OnInit {
-  barPointData: any;
+  barStoryPointsData: any;
+  barPointsData: any;
+
   pieData: any;
   barOptions: any;
   pieOptions: any;
@@ -33,6 +36,12 @@ export class ResumenVersionComponent implements OnInit {
     selectedVersion: new FormControl<number | null>(null)
   });
 
+  /* Resume vars*/
+  rangeDate: string = '';
+  totalPoints: number = 0;
+  projectPoints: number = 0;
+  offProjectPoints: number = 0;
+
   ngOnInit() {
     this.reportsService.getProjects().subscribe({
       next: (data) => {
@@ -40,8 +49,6 @@ export class ResumenVersionComponent implements OnInit {
       }
     }
     );
-
-
     this.initCharts();
   }
 
@@ -51,17 +58,7 @@ export class ResumenVersionComponent implements OnInit {
     const textColorSecondary = documentStyle.getPropertyValue('--text-color-secondary');
     const surfaceBorder = documentStyle.getPropertyValue('--surface-border');
 
-    this.barPointData = {
-      labels: ['Funcionalidad1', 'Funcionalidad2', 'Funcionalidad3', 'Funcionalidad4', 'Funcionalidad5', 'Funcionalidad6', 'Funcionalidad7'],
-      datasets: [
-        {
-          label: 'N° de actividades',
-          backgroundColor: documentStyle.getPropertyValue('--p-primary-500'),
-          borderColor: documentStyle.getPropertyValue('--p-primary-500'),
-          data: [2, 3, 6, 4, 5, 1, 3]
-        }
-      ]
-    };
+    
 
     this.barOptions = {
       maintainAspectRatio: false,
@@ -78,7 +75,7 @@ export class ResumenVersionComponent implements OnInit {
           ticks: {
             color: textColorSecondary,
             font: {
-              weight: 500
+              weight: 400
             }
           },
           grid: {
@@ -98,30 +95,72 @@ export class ResumenVersionComponent implements OnInit {
       }
     };
 
-    this.pieData = {
-      labels: ['A', 'B', 'C'],
-      datasets: [
-        {
-          data: [540, 325, 702],
-          backgroundColor: [documentStyle.getPropertyValue('--p-indigo-500'), documentStyle.getPropertyValue('--p-purple-500'), documentStyle.getPropertyValue('--p-teal-500')],
-          hoverBackgroundColor: [documentStyle.getPropertyValue('--p-indigo-400'), documentStyle.getPropertyValue('--p-purple-400'), documentStyle.getPropertyValue('--p-teal-400')]
-        }
-      ]
-    };
+    
 
     this.pieOptions = {
       plugins: {
-        legend: {
-          labels: {
-            usePointStyle: true,
-            color: textColor
-          }
-        }
+        legend: null
       }
     };
   }
 
   getResume(){
+    let projects = this.resumeForm.value.selectedProjects?.name;
+    let version = this.resumeForm.value.selectedVersion;
+    this.isLoaded = true;
+    this.isLoading = true;
+
+    this.reportsService.getProjectVersionProgress(`"${projects}"`, `"${version}"`).subscribe({
+      next: (data) => {
+        console.log(data);
+        const documentStyle = getComputedStyle(document.documentElement);
+    
+        this.barStoryPointsData = {
+          labels: data.on_project.labels,
+          datasets: [
+            {
+              label: 'Puntos consumidos',
+              // backgroundColor: documentStyle.getPropertyValue('--p-primary-500'),
+              // borderColor: documentStyle.getPropertyValue('--p-primary-500'),
+              data: data.on_project.data
+            }
+          ]
+        };
+    
+        this.barPointsData = {
+          labels: data.off_project.labels,
+          datasets: [
+            {
+              label: 'Puntos consumidos',
+              // backgroundColor: documentStyle.getPropertyValue('--p-primary-500'),
+              // borderColor: documentStyle.getPropertyValue('--p-primary-500'),
+              data: data.off_project.data
+            }
+          ]
+        };
+        this.rangeDate = `${data.start} - ${data.end}`;
+        this.totalPoints = data.on_project.total + data.off_project.total;
+        this.projectPoints = data.on_project.total;
+        this.offProjectPoints = data.off_project.total;
+        this.pieData = {
+          labels: ['Puntos del proyecto', 'Puntos fuera del proyecto'],
+          datasets: [
+            {
+              data: [data.on_project.total, data.off_project.total],
+              backgroundColor: [documentStyle.getPropertyValue('--p-indigo-500'), documentStyle.getPropertyValue('--p-purple-500')],
+              hoverBackgroundColor: [documentStyle.getPropertyValue('--p-indigo-400'), documentStyle.getPropertyValue('--p-purple-400')]
+            }
+          ]
+        };
+
+        this.isLoading = false;
+      },
+      error: (err) => {
+        this.isLoading = false ;
+      },
+    });
+    
+    
 
   }
 }
