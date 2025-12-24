@@ -38,7 +38,7 @@ export class ResumenVersionComponent implements OnInit {
 
   /* Resume vars*/
   rangeDate: string = '';
-  totalPoints: number = 0;
+  totalPoints: string = '';
   projectPoints: number = 0;
   offProjectPoints: number = 0;
 
@@ -139,7 +139,7 @@ export class ResumenVersionComponent implements OnInit {
           ]
         };
         this.rangeDate = `${data.start} - ${data.end}`;
-        this.totalPoints = data.on_project.total + data.off_project.total;
+        this.totalPoints = (data.on_project.total + data.off_project.total).toFixed(2);
         this.projectPoints = data.on_project.total;
         this.offProjectPoints = data.off_project.total;
         this.pieData = {
